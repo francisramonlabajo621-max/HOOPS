@@ -1539,6 +1539,11 @@ body::before {
     transition: color 0.3s ease;
 }
 
+[data-theme="light"] .post-card-title {
+    color: #020617 !important;
+    font-weight: 800;
+}
+
 .post-card-modern:hover .post-card-title {
     color: var(--primary-color);
 }
