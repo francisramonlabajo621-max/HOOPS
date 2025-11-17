@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CourtSide{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='logo-ball.svg') }}">
+</head>
+<body data-theme="dark">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('index') }}">
+                <img src="{{ url_for('static', filename='logo-ball.svg') }}" alt="CourtSide Logo" class="navbar-logo-img me-2" loading="lazy">
+                <div class="d-flex flex-column">
+                    <span class="fw-bold text-uppercase logo-title">CourtSide</span>
+                    <small class="logo-tagline text-muted">Where Basketball Lives</small>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">
+                            <i class="bi bi-house"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'explore' %}active{% endif %}" href="{{ url_for('explore') }}">
+                            <i class="bi bi-compass"></i> Explore
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'about' %}active{% endif %}" href="{{ url_for('about') }}">
+                            <i class="bi bi-info-circle"></i> About Us
+                        </a>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('add_post') }}">
+                            <i class="bi bi-plus-circle"></i> Add Post
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav">
+                    <!-- Dark Mode Toggle -->
+                    <li class="nav-item">
+                        <button class="btn btn-link nav-link" id="darkModeToggle" title="Toggle Dark Mode">
+                            <i class="bi bi-moon-fill" id="darkModeIcon"></i>
+                        </button>
+                    </li>
+                    {% if current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'profile' %}active{% endif %}" href="{{ url_for('profile') }}" style="cursor: pointer;">
+                            <i class="bi bi-person-circle"></i> Welcome, {{ current_user.username }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <div class="container mt-3">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content with Sidebar -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-xl-2 col-lg-3 mb-4 d-none d-lg-block">
+                <div class="quick-launch-panel">
+                    <div class="panel-heading">
+                        <span><i class="bi bi-lightning-charge-fill"></i> Quick Launch</span>
+                        <small>Jump around</small>
+                    </div>
+                    <div class="quick-launch-links">
+                        <a href="{{ url_for('index') }}" class="quick-launch-item {% if request.endpoint == 'index' %}active{% endif %}">
+                            <i class="bi bi-house-door"></i>
+                            <div>
+                                <p>Home feed</p>
+                                <small>Latest drops</small>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('explore') }}" class="quick-launch-item {% if request.endpoint == 'explore' %}active{% endif %}">
+                            <i class="bi bi-compass"></i>
+                            <div>
+                                <p>Explore</p>
+                                <small>Community heat</small>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('about') }}" class="quick-launch-item {% if request.endpoint == 'about' %}active{% endif %}">
+                            <i class="bi bi-info-circle"></i>
+                            <div>
+                                <p>About</p>
+                                <small>Our mission</small>
+                            </div>
+                        </a>
+                        {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('profile') }}" class="quick-launch-item {% if request.endpoint == 'profile' %}active{% endif %}">
+                            <i class="bi bi-person-circle"></i>
+                            <div>
+                                <p>Profile</p>
+                                <small>Your dashboard</small>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('add_post') }}" class="quick-launch-item cta">
+                            <i class="bi bi-pencil-square"></i>
+                            <div>
+                                <p>Create</p>
+                                <small>Write a post</small>
+                            </div>
+                        </a>
+                        {% else %}
+                        <a href="{{ url_for('login') }}" class="quick-launch-item">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            <div>
+                                <p>Login</p>
+                                <small>Return to your feed</small>
+                            </div>
+                        </a>
+                        <a href="{{ url_for('register') }}" class="quick-launch-item cta">
+                            <i class="bi bi-person-plus"></i>
+                            <div>
+                                <p>Join</p>
+                                <small>Create an account</small>
+                            </div>
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Content Area -->
+            <div class="col-xl-10 col-lg-9">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-modern mt-5">
+        <div class="footer-gradient"></div>
+        <div class="container py-4 position-relative">
+            <div class="footer-simple d-flex flex-wrap justify-content-between align-items-center gap-3">
+                    <div class="footer-brand-mini d-flex align-items-center gap-3">
+                    <img src="{{ url_for('static', filename='logo-ball.svg') }}" alt="CourtSide Logo" class="footer-mini-logo">
+                    <div>
+                        <p class="eyebrow-text mb-1">CourtSide</p>
+                        <span class="text-muted">Where basketball culture thrives.</span>
+                    </div>
+                </div>
+                <nav class="footer-mini-links">
+                    <a href="{{ url_for('index') }}">Home</a>
+                    <a href="{{ url_for('explore') }}">Explore</a>
+                    <a href="{{ url_for('about') }}">About</a>
+                    <a href="{{ url_for('index', search='film room') }}">Film Room</a>
+                    <a href="{{ url_for('index', view='videos') }}">Video</a>
+                    <a href="#">Privacy</a>
+                    <a href="#">Terms</a>
+                </nav>
+                <div class="social-links-footer">
+                    <a href="#" class="social-link" title="X/Twitter"><i class="bi bi-twitter"></i></a>
+                    <a href="#" class="social-link" title="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link" title="YouTube"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom mt-3">
+                <p class="mb-0">&copy; 2025 CourtSide. Elevating basketball culture.</p>
+                <div class="footer-legal">
+                    <span>Made with <i class="bi bi-heart-fill text-danger"></i></span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+

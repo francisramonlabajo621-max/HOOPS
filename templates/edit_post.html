@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Post - CourtSide{% endblock %}
+
+{% block content %}
+<section class="editor-wrapper">
+    <div class="editor-header">
+        <div>
+            <p class="eyebrow-text mb-1">Post Studio</p>
+            <h1>Edit “{{ post.title }}”</h1>
+            <p class="text-muted mb-0">Refresh your story, swap media, or adjust the category — everything autosaves on publish.</p>
+        </div>
+        <span class="editor-status">
+            <i class="bi bi-clock-history"></i> Last updated {{ post.date_posted.strftime('%B %d, %Y') }}
+        </span>
+    </div>
+    <div class="editor-card">
+        <form method="POST" enctype="multipart/form-data" class="editor-form">
+            <div class="form-grid two-col">
+                <div class="form-control-modern">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id="title" value="{{ post.title }}" required>
+                </div>
+                <div class="form-control-modern">
+                    <label for="category">Category</label>
+                    <input type="text" name="category" id="category" value="{{ post.category or '' }}" placeholder="e.g., Draft, Analysis" list="categorySuggestions">
+                    <small>Helps surface your post in curated feeds.</small>
+                    {% if categories %}
+                    <datalist id="categorySuggestions">
+                        {% for category in categories %}
+                        <option value="{{ category }}"></option>
+                        {% endfor %}
+                    </datalist>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-control-modern">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" class="textarea-modern" rows="10" required>{{ post.content }}</textarea>
+                <small>Use paragraphs, lists, and embeds to tell the full story.</small>
+            </div>
+            <div class="form-grid two-col">
+                <div class="form-control-modern">
+                    <label for="image"><i class="bi bi-image"></i> Feature Image</label>
+                    {% if post.image_filename %}
+                    <div class="media-current-preview">
+                        <img src="{{ url_for('static', filename='uploads/' + post.image_filename) }}" alt="Current feature image">
+                        <span>Current cover</span>
+                    </div>
+                    {% endif %}
+                    <input type="file" name="image" id="image" accept="image/*">
+                    <small>PNG, JPG, GIF, WEBP up to 16MB.</small>
+                    <div id="imagePreview" class="media-current-preview" style="display: none;">
+                        <img id="previewImg" src="" alt="Preview">
+                        <span>New preview</span>
+                    </div>
+                </div>
+                <div class="form-control-modern">
+                    <label for="video_url"><i class="bi bi-link-45deg"></i> Spotlight Video URL</label>
+                    <input type="url" name="video_url" id="video_url" value="{{ post.video_url or '' }}" placeholder="https://youtu.be/..." pattern="https?://.*">
+                    <small>Paste a YouTube/Vimeo link or direct MP4 URL.</small>
+                </div>
+            </div>
+            <div class="editor-actions">
+                <button type="submit" class="btn btn-glow">
+                    <i class="bi bi-save"></i> Save Changes
+                </button>
+                <a href="{{ url_for('post', id=post.id) }}" class="btn btn-ghost">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const editImageInput = document.getElementById('image');
+    if (editImageInput) {
+        editImageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('previewImg').src = event.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
+    }
+</script>
+{% endblock %}
+

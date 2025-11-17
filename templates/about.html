@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+
+{% block title %}About Us - CourtSide{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="text-center mb-5">
+    <div class="about-hero mb-4">
+        <i class="bi bi-basketball-fill" style="font-size: 5rem; color: #1E40AF;"></i>
+    </div>
+    <h1 class="display-3 fw-bold mb-3">About CourtSide</h1>
+    <p class="lead text-muted">The premier platform for basketball enthusiasts, analysts, and fans</p>
+</div>
+
+<!-- Mission Section -->
+<section class="mb-5">
+    <div class="card border-0 shadow-lg">
+        <div class="card-body p-5">
+            <div class="row align-items-center">
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <h2 class="fw-bold mb-4">
+                        <i class="bi bi-bullseye text-primary"></i> Our Mission
+                    </h2>
+                    <p class="lead">
+                        At CourtSide, we're passionate about basketball and dedicated to creating a vibrant community where fans, players, and enthusiasts can share their love for the game.
+                    </p>
+                    <p>
+                        Whether you're interested in NBA highlights, college basketball analysis, training tips, or game strategies, we provide a platform for everyone to express their thoughts and connect with fellow basketball lovers.
+                    </p>
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="mission-icon">
+                        <i class="bi bi-trophy" style="font-size: 8rem; color: #1E40AF; opacity: 0.2;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="mb-5">
+    <h2 class="text-center mb-5 fw-bold">What We Offer</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 feature-card text-center">
+                <div class="card-body p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-newspaper" style="font-size: 3rem; color: #1E40AF;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Latest News</h4>
+                    <p class="text-muted">Stay updated with the latest basketball news, game recaps, and player updates from around the world.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 feature-card text-center">
+                <div class="card-body p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-lightbulb" style="font-size: 3rem; color: #1E40AF;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Expert Tips</h4>
+                    <p class="text-muted">Learn from experienced players and coaches with detailed guides on improving your game and understanding strategies.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 feature-card text-center">
+                <div class="card-body p-4">
+                    <div class="feature-icon mb-3">
+                        <i class="bi bi-people" style="font-size: 3rem; color: #DC2626;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Community</h4>
+                    <p class="text-muted">Connect with fellow basketball enthusiasts, share your thoughts, and engage in meaningful discussions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="mb-5">
+    <div class="card border-0 shadow-lg">
+        <div class="card-body p-5">
+            <h2 class="text-center mb-5 fw-bold">Our Community in Numbers</h2>
+            <div class="row g-4 text-center">
+                <div class="col-md-4">
+                    <div class="stat-number mb-2">
+                        <i class="bi bi-newspaper" style="font-size: 2.5rem; color: #1E40AF;"></i>
+                    </div>
+                    <h2 class="fw-bold text-primary">{{ total_posts }}</h2>
+                    <p class="text-muted mb-0">Blog Posts</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-number mb-2">
+                        <i class="bi bi-people" style="font-size: 2.5rem; color: #1E40AF;"></i>
+                    </div>
+                    <h2 class="fw-bold text-primary">{{ total_users }}</h2>
+                    <p class="text-muted mb-0">Active Members</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-number mb-2">
+                        <i class="bi bi-chat-dots" style="font-size: 2.5rem; color: #DC2626;"></i>
+                    </div>
+                    <h2 class="fw-bold text-primary">{{ total_comments }}</h2>
+                    <p class="text-muted mb-0">Comments</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us Section -->
+<section class="mb-5">
+    <h2 class="text-center mb-5 fw-bold">Why Choose CourtSide?</h2>
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="d-flex mb-4">
+                <div class="flex-shrink-0">
+                    <div class="why-icon">
+                        <i class="bi bi-check-circle-fill" style="font-size: 2rem; color: #10b981;"></i>
+                    </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h5 class="fw-bold">Quality Content</h5>
+                    <p class="text-muted mb-0">We curate and promote high-quality articles that provide real value to our readers.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="d-flex mb-4">
+                <div class="flex-shrink-0">
+                    <div class="why-icon">
+                        <i class="bi bi-check-circle-fill" style="font-size: 2rem; color: #10b981;"></i>
+                    </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h5 class="fw-bold">Easy to Use</h5>
+                    <p class="text-muted mb-0">Our platform is designed with user experience in mind, making it easy to read, write, and interact.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="d-flex mb-4">
+                <div class="flex-shrink-0">
+                    <div class="why-icon">
+                        <i class="bi bi-check-circle-fill" style="font-size: 2rem; color: #10b981;"></i>
+                    </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h5 class="fw-bold">Active Community</h5>
+                    <p class="text-muted mb-0">Join a thriving community of basketball fans who are passionate about the game.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="d-flex mb-4">
+                <div class="flex-shrink-0">
+                    <div class="why-icon">
+                        <i class="bi bi-check-circle-fill" style="font-size: 2rem; color: #10b981;"></i>
+                    </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <h5 class="fw-bold">Regular Updates</h5>
+                    <p class="text-muted mb-0">Fresh content is published regularly, keeping you engaged and informed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="text-center">
+    <div class="card border-0 shadow-lg cta-card">
+        <div class="card-body p-5">
+            <h2 class="mb-3">Join Our Community Today!</h2>
+            <p class="lead text-muted mb-4">Start sharing your basketball insights and connect with fellow fans</p>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('add_post') }}" class="btn btn-primary btn-lg px-5">
+                <i class="bi bi-plus-circle"></i> Write Your First Post
+            </a>
+            {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 me-2">
+                <i class="bi bi-person-plus"></i> Get Started
+            </a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg px-5">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

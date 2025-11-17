@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - CourtSide{% endblock %}
+
+{% block content %}
+<section class="hero-banner mb-5">
+    <div class="hero-content">
+        <div>
+            <p class="eyebrow-text">Welcome to CourtSide</p>
+            <h1 class="hero-title">
+                Your ultimate<br><span>basketball destination</span>
+            </h1>
+            <p class="hero-subtitle">
+                Game analysis, player insights, breaking news, and community discussions—all in one place.
+            </p>
+            <div class="hero-meta">
+                <div class="stat-pill">
+                    <span class="stat-value">{{ total_posts }}</span>
+                    <span class="stat-label">Published Posts</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-value">{{ categories|length }}</span>
+                    <span class="stat-label">Active Categories</span>
+                </div>
+                <div class="stat-pill">
+                    <span class="stat-value">{{ total_users }}</span>
+                    <span class="stat-label">Contributors</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-visual d-none d-md-flex">
+            <div class="ball-glow"></div>
+            <div class="ball-ring"></div>
+            <i class="bi bi-basketball hero-icon"></i>
+        </div>
+    </div>
+    {% if categories %}
+    <div class="trending-chips">
+        <span class="chip-label"><i class="bi bi-lightning-charge-fill"></i> Trending Tags:</span>
+        <div class="chip-group">
+            {% for category in categories[:6] %}
+            <a href="{{ url_for('index', category=category) }}" class="category-chip">
+                <i class="bi bi-tag"></i> {{ category }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</section>
+
+<!-- Search Bar -->
+<div class="row mb-4">
+    <div class="col-lg-10 mx-auto">
+        <form method="GET" action="{{ url_for('index') }}" class="search-bar-minimal">
+            <div class="search-bar-row">
+                <div class="search-icon">
+                    <i class="bi bi-search"></i>
+                </div>
+                <input type="search" name="search" placeholder="Search the latest hoops stories..." value="{{ search_query }}">
+                <div class="search-inline-selects">
+                    <select name="category">
+                        <option value="">All categories</option>
+                        {% for category in categories %}
+                        <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="view">
+                        <option value="" {% if not selected_view %}selected{% endif %}>All formats</option>
+                        <option value="stories" {% if selected_view == 'stories' %}selected{% endif %}>Articles</option>
+                        <option value="videos" {% if selected_view == 'videos' %}selected{% endif %}>Video</option>
+                    </select>
+                </div>
+                {% if search_query or selected_category or selected_view %}
+                <a href="{{ url_for('index') }}" class="btn-clear" title="Clear filters"><i class="bi bi-x-lg"></i></a>
+                {% endif %}
+                <button type="submit">Search</button>
+            </div>
+            <div class="search-bar-hint text-muted mt-2">
+                <i class="bi bi-lightbulb"></i> Pro tip: Search by team, player, or topic for best results.
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Blog Posts -->
+<div class="row g-4 post-grid">
+    {% if posts %}
+        {% for post in posts %}
+        <div class="col-12 col-md-6 col-xl-4">
+            <article class="post-card-modern h-100">
+                <div class="card-media">
+                    {% if post.image_filename %}
+                    <div class="media-thumb" style="background-image: url('{{ url_for('static', filename='uploads/' + post.image_filename) }}');"></div>
+                    {% else %}
+                    <div class="media-thumb placeholder">
+                        <i class="bi bi-basketball"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-badges">
+                        {% if post.category %}
+                        <a href="{{ url_for('index', category=post.category) }}" class="category-pill">
+                            <i class="bi bi-tag"></i> {{ post.category }}
+                        </a>
+                        {% endif %}
+                        {% if post.video_url %}
+                        <span class="category-pill soft">
+                            <i class="bi bi-play-circle"></i> Video
+                        </span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="card-body-modern">
+                    <div class="author-chip">
+                        {% if post.author.profile_picture %}
+                        <img src="{{ url_for('static', filename='uploads/' + post.author.profile_picture) }}" alt="{{ post.author.username }}">
+                        {% else %}
+                        <div class="avatar-placeholder">
+                            <i class="bi bi-person-fill"></i>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <a href="{{ url_for('profile', user_id=post.author.id) }}" class="author-name">{{ post.author.username }}</a>
+                            <p class="author-meta mb-0">
+                                <i class="bi bi-calendar"></i> {{ post.date_posted.strftime('%b %d, %Y') }}
+                            </p>
+                        </div>
+                    </div>
+                    <h3 class="post-card-title">{{ post.title }}</h3>
+                    <p class="post-card-excerpt">{{ post.content[:160] }}{% if post.content|length > 160 %}...{% endif %}</p>
+                </div>
+                <div class="card-footer-modern">
+                    <div class="meta-list">
+                        <span><i class="bi bi-chat-dots"></i> {{ post.comments|length }} comments</span>
+                        <span><i class="bi bi-clock-history"></i> {{ post.date_posted.strftime('%I:%M %p') }}</span>
+                    </div>
+                    <a href="{{ url_for('post', id=post.id) }}" class="btn btn-soft">
+                        Read Article <i class="bi bi-arrow-up-right"></i>
+                    </a>
+                </div>
+            </article>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12">
+            <div class="empty-state-card text-center">
+                <i class="bi bi-emoji-frown"></i>
+                {% if search_query or selected_category %}
+                <p>No posts found{% if search_query %} for "<strong>{{ search_query }}</strong>"{% endif %}{% if selected_category %} in "<strong>{{ selected_category }}</strong>"{% endif %}.</p>
+                <a href="{{ url_for('index') }}" class="btn btn-soft mt-2">
+                    Reset Filters
+                </a>
+                {% else %}
+                <p>No stories yet. {% if current_user.is_authenticated %}<a href="{{ url_for('add_post') }}">Share your first take!</a>{% else %}<a href="{{ url_for('register') }}">Join now</a> to publish.</p>{% endif %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

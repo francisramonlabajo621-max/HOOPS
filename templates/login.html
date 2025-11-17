@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - CourtSide{% endblock %}
+
+{% block content %}
+<section class="auth-wrapper">
+    <div class="row g-5 align-items-center">
+        <div class="col-lg-6">
+            <div class="auth-card glass-card">
+                <div class="auth-brand">
+                    <img src="{{ url_for('static', filename='logo-ball.svg') }}" alt="CourtSide" loading="lazy">
+                    <div>
+                        <p class="eyebrow-text mb-1">Member Access</p>
+                        <h2 class="mb-0">Welcome back to the Hardwood</h2>
+                    </div>
+                </div>
+                <p class="text-muted mb-4">Jump back into your dashboard to publish new takes, track comments, and customize your profile.</p>
+                <form method="POST" class="auth-form-grid">
+                    <div class="form-control-modern">
+                        <label for="username">Username</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-person-circle"></i>
+                            <input type="text" name="username" id="username" placeholder="Enter your handle" required autofocus>
+                        </div>
+                    </div>
+                    <div class="form-control-modern">
+                        <label for="password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-shield-lock"></i>
+                            <input type="password" name="password" id="password" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-glow w-100">
+                        <i class="bi bi-box-arrow-in-right"></i> Sign In
+                    </button>
+                </form>
+                <div class="auth-meta">
+                    <p class="mb-0 text-muted">Need an account?
+                        <a href="{{ url_for('register') }}">Create one</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 offset-lg-1 d-none d-lg-block">
+            <div class="auth-highlight">
+                <div class="highlight-icon">
+                    <i class="bi bi-stars"></i>
+                </div>
+                <h4>Inside access includes:</h4>
+                <ul class="feature-list">
+                    <li><i class="bi bi-check2-circle"></i> Unlimited post creation & editing</li>
+                    <li><i class="bi bi-check2-circle"></i> Real-time comment management</li>
+                    <li><i class="bi bi-check2-circle"></i> Personalized profile + media hub</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

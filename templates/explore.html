@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}Explore - CourtSide{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5">
+    <h1 class="display-4 fw-bold mb-3">
+        <i class="bi bi-compass-fill" style="color: #1E40AF;"></i> Explore
+    </h1>
+    <p class="lead text-muted">Discover amazing basketball content from our community</p>
+</div>
+
+<!-- Featured Posts Section -->
+<section class="mb-5">
+    <h2 class="mb-4">
+        <i class="bi bi-star-fill text-warning"></i> Featured Posts
+    </h2>
+    <div class="row">
+        {% if featured_posts %}
+            {% for post in featured_posts %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 explore-card">
+                    <!-- Post Image - Always Show -->
+                    <div class="card-image-wrapper">
+                        {% if post.image_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' + post.image_filename) }}" class="card-img-top post-card-image" alt="{{ post.title }}">
+                        {% else %}
+                        <div class="card-img-top post-placeholder d-flex align-items-center justify-content-center">
+                            <div class="placeholder-icon">
+                                <i class="bi bi-basketball-fill"></i>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            {% if post.author.profile_picture %}
+                            <img src="{{ url_for('static', filename='uploads/' + post.author.profile_picture) }}" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;" alt="{{ post.author.username }}">
+                            {% else %}
+                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px; background: #1E40AF;">
+                                <i class="bi bi-person-fill text-white" style="font-size: 0.8rem;"></i>
+                            </div>
+                            {% endif %}
+                            <p class="text-muted small mb-0">
+                                <a href="{{ url_for('profile', user_id=post.author.id) }}" class="text-decoration-none">{{ post.author.username }}</a> | 
+                                <i class="bi bi-calendar"></i> {{ post.date_posted.strftime('%B %d, %Y') }}
+                            </p>
+                        </div>
+                        <p class="card-text flex-grow-1">{{ post.content[:120] }}{% if post.content|length > 120 %}...{% endif %}</p>
+                        <div class="mt-auto">
+                            <a href="{{ url_for('post', id=post.id) }}" class="btn btn-primary btn-sm w-100">
+                                Read More <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-12">
+                <div class="alert alert-info text-center">
+                    <i class="bi bi-info-circle"></i> No posts available yet.
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="mb-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center h-100 stat-card">
+                <div class="card-body p-4">
+                    <div class="stat-icon mb-3">
+                        <i class="bi bi-newspaper" style="font-size: 3rem; color: #1E40AF;"></i>
+                    </div>
+                    <h3 class="fw-bold">{{ all_posts|length }}</h3>
+                    <p class="text-muted mb-0">Total Posts</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center h-100 stat-card">
+                <div class="card-body p-4">
+                    <div class="stat-icon mb-3">
+                        <i class="bi bi-people" style="font-size: 3rem; color: #1E40AF;"></i>
+                    </div>
+                    <h3 class="fw-bold">{{ authors|length }}</h3>
+                    <p class="text-muted mb-0">Active Authors</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm text-center h-100 stat-card">
+                <div class="card-body p-4">
+                    <div class="stat-icon mb-3">
+                        <i class="bi bi-chat-dots" style="font-size: 3rem; color: #DC2626;"></i>
+                    </div>
+                    <h3 class="fw-bold">
+                        {% set total_comments = namespace(count=0) %}
+                        {% for post in all_posts %}
+                            {% set total_comments.count = total_comments.count + post.comments|length %}
+                        {% endfor %}
+                        {{ total_comments.count }}
+                    </h3>
+                    <p class="text-muted mb-0">Total Comments</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Top Authors Section -->
+{% if authors %}
+<section class="mb-5">
+    <h2 class="mb-4">
+        <i class="bi bi-trophy-fill text-warning"></i> Top Contributors
+    </h2>
+    <div class="row">
+        {% for author, count in authors.items() %}
+        <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card border-0 shadow-sm author-card">
+                <div class="card-body d-flex align-items-center">
+                    <div class="author-avatar me-3">
+                        <i class="bi bi-person-circle" style="font-size: 3rem; color: #1E40AF;"></i>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h5 class="mb-1">{{ author }}</h5>
+                        <p class="text-muted mb-0">
+                            <i class="bi bi-file-text"></i> {{ count }} post{{ 's' if count != 1 else '' }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Call to Action -->
+<section class="text-center">
+    <div class="card border-0 shadow-lg cta-card">
+        <div class="card-body p-5">
+            <h2 class="mb-3">Ready to Share Your Thoughts?</h2>
+            <p class="lead text-muted mb-4">Join our community and start writing about basketball!</p>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('add_post') }}" class="btn btn-primary btn-lg px-5">
+                <i class="bi bi-plus-circle"></i> Create Your First Post
+            </a>
+            {% else %}
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg px-5 me-2">
+                <i class="bi bi-person-plus"></i> Join Now
+            </a>
+            <a href="{{ url_for('login') }}" class="btn btn-outline-primary btn-lg px-5">
+                <i class="bi bi-box-arrow-in-right"></i> Login
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}
+

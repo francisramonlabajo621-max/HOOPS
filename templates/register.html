@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - CourtSide{% endblock %}
+
+{% block content %}
+<section class="auth-wrapper">
+    <div class="row g-5 align-items-center flex-row-reverse">
+        <div class="col-lg-6">
+            <div class="auth-card glass-card">
+                <div class="auth-brand">
+                    <img src="{{ url_for('static', filename='logo-ball.svg') }}" alt="CourtSide" loading="lazy">
+                    <div>
+                        <p class="eyebrow-text mb-1">Create your profile</p>
+                        <h2 class="mb-0">Join the CourtSide community</h2>
+                    </div>
+                </div>
+                <p class="text-muted mb-4">Share stories, break down plays, grow a following, and showcase your basketball perspective.</p>
+                <form method="POST" class="auth-form-grid">
+                    <div class="form-control-modern">
+                        <label for="username">Username</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-at"></i>
+                            <input type="text" name="username" id="username" placeholder="Pick a public handle" required autofocus>
+                        </div>
+                    </div>
+                    <div class="form-control-modern">
+                        <label for="email">Email</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-envelope-open"></i>
+                            <input type="email" name="email" id="email" placeholder="you@hoopsfan.com" required>
+                        </div>
+                    </div>
+                    <div class="form-control-modern">
+                        <label for="password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-lock-fill"></i>
+                            <input type="password" name="password" id="password" placeholder="Create a secure password" required>
+                        </div>
+                    </div>
+                    <div class="form-control-modern">
+                        <label for="confirm_password">Confirm Password</label>
+                        <div class="input-with-icon">
+                            <i class="bi bi-check-circle"></i>
+                            <input type="password" name="confirm_password" id="confirm_password" placeholder="Repeat password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-glow w-100">
+                        <i class="bi bi-person-plus"></i> Create Account
+                    </button>
+                </form>
+                <div class="auth-meta">
+                    <p class="mb-0 text-muted">Already part of the crew?
+                        <a href="{{ url_for('login') }}">Sign in</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5 d-none d-lg-block">
+            <div class="auth-highlight gradient">
+                <div class="highlight-icon">
+                    <i class="bi bi-graph-up"></i>
+                </div>
+                <h4>Creator perks:</h4>
+                <ul class="feature-list">
+                    <li><i class="bi bi-check2-circle"></i> Spotlight profile with cover + avatar</li>
+                    <li><i class="bi bi-check2-circle"></i> Image & video embeds for every story</li>
+                    <li><i class="bi bi-check2-circle"></i> Analytics on comments and engagement</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

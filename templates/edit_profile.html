@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - CourtSide{% endblock %}
+
+{% block content %}
+<section class="profile-editor-wrapper">
+    <div class="editor-header">
+        <div>
+            <p class="eyebrow-text mb-1">Profile Studio</p>
+            <h1>Update your hoops identity</h1>
+            <p class="text-muted mb-0">Swap photos, refresh your bio, and keep your contact details current.</p>
+        </div>
+        <div class="editor-status">
+            <i class="bi bi-clock-history"></i> Member since {% if current_user.date_joined %}{{ current_user.date_joined.strftime('%b %Y') }}{% else %}recently{% endif %}
+        </div>
+    </div>
+    <div class="editor-card">
+        <form method="POST" enctype="multipart/form-data" class="editor-form">
+            <!-- Cover Photo -->
+            <div class="media-upload-grid">
+                <div class="media-card">
+                    <label class="form-label fw-bold">
+                        <i class="bi bi-image"></i> Cover Photo
+                    </label>
+                    <div class="cover-preview-shell">
+                        {% if user.cover_photo %}
+                        <img src="{{ url_for('static', filename='uploads/' + user.cover_photo) }}" alt="Cover preview">
+                        {% else %}
+                        <div class="cover-placeholder">
+                            <i class="bi bi-image"></i>
+                            <p>No cover yet</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <input type="file" name="cover_photo" id="cover_photo" class="form-control" accept="image/*">
+                    <small class="form-text text-muted">1200x300 works great. PNG/JPG/WEBP.</small>
+                    <div id="coverPreview" class="media-preview" style="display:none;">
+                        <img id="previewCover" src="" alt="New cover preview">
+                    </div>
+                </div>
+                <div class="media-card">
+                    <label class="form-label fw-bold">
+                        <i class="bi bi-person-circle"></i> Profile Picture
+                    </label>
+                    <div class="avatar-preview-shell">
+                        {% if user.profile_picture %}
+                        <img src="{{ url_for('static', filename='uploads/' + user.profile_picture) }}" alt="Profile preview">
+                        {% else %}
+                        <div class="avatar-placeholder">
+                            <i class="bi bi-person"></i>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <input type="file" name="profile_picture" id="profile_picture" class="form-control" accept="image/*">
+                    <small class="form-text text-muted">Square images (400x400) look best.</small>
+                    <div id="profilePreview" class="avatar-preview-shell" style="display:none;">
+                        <img id="previewProfile" src="" alt="New profile preview">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-grid two-col">
+                <div class="form-control-modern">
+                    <label>Username</label>
+                    <input type="text" value="{{ user.username }}" disabled>
+                    <small>Handles are permanent</small>
+                </div>
+                <div class="form-control-modern">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" value="{{ user.email }}" required>
+                </div>
+            </div>
+            <div class="form-control-modern">
+                <label for="bio">Bio</label>
+                <textarea name="bio" id="bio" class="textarea-modern" rows="5" placeholder="Tell us about yourself...">{{ user.bio or '' }}</textarea>
+            </div>
+            <div class="form-grid two-col">
+                <div class="form-control-modern">
+                    <label for="location"><i class="bi bi-geo-alt"></i> Location</label>
+                    <input type="text" name="location" id="location" value="{{ user.location or '' }}" placeholder="City, Country">
+                </div>
+                <div class="form-control-modern">
+                    <label for="website"><i class="bi bi-link-45deg"></i> Website</label>
+                    <input type="url" name="website" id="website" value="{{ user.website or '' }}" placeholder="https://yourwebsite.com">
+                </div>
+            </div>
+            <div class="editor-actions">
+                <button type="submit" class="btn btn-glow">
+                    <i class="bi bi-save"></i> Save Changes
+                </button>
+                <a href="{{ url_for('profile') }}" class="btn btn-ghost">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const coverInput = document.getElementById('cover_photo');
+    const profileInput = document.getElementById('profile_picture');
+
+    coverInput && coverInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewCover').src = e.target.result;
+                document.getElementById('coverPreview').style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementById('coverPreview').style.display = 'none';
+        }
+    });
+    
+    profileInput && profileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('previewProfile').src = e.target.result;
+                document.getElementById('profilePreview').style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementById('profilePreview').style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}
+

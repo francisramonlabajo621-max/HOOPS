@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Post - CourtSide{% endblock %}
+
+{% block content %}
+<section class="post-studio-wrapper">
+    <div class="editor-header">
+        <div>
+            <p class="eyebrow-text mb-1">Post Studio</p>
+            <h1>Create a New Post</h1>
+            <p class="text-muted mb-0">Share your basketball insights with the community.</p>
+        </div>
+    </div>
+    <div class="editor-card">
+        <form method="POST" enctype="multipart/form-data" class="editor-form">
+            <div class="form-grid two-col">
+                <div class="form-control-modern">
+                    <label for="title">Title</label>
+                    <input type="text" name="title" id "title" required placeholder="Enter post title">
+                </div>
+                <div class="form-control-modern">
+                    <label for="category">Category</label>
+                    <input type="text" name="category" id="category" placeholder="e.g., Draft, Analysis, Highlights" list="categorySuggestions">
+                    <small>Use an existing category or create a new one.</small>
+                </div>
+            </div>
+            <div class="form-control-modern">
+                <label for="content">Content</label>
+                <textarea name="content" id="content" class="textarea-modern" rows="10" required placeholder="Write your post content here..."></textarea>
+            </div>
+            {% if categories %}
+            <datalist id="categorySuggestions">
+                {% for category in categories %}
+                <option value="{{ category }}"></option>
+                {% endfor %}
+            </datalist>
+            {% endif %}
+    
+            <div class="media-upload-grid">
+                <div class="media-card">
+                    <label for="image" class="form-label">
+                        <i class="bi bi-image"></i> Feature Image (Optional)
+                    </label>
+                    <input type="file" name="image" id="image" class="form-control" accept="image/*">
+                    <small class="form-text text-muted">PNG, JPG, JPEG, GIF, WEBP up to 16MB.</small>
+                    <div id="imagePreview" class="media-preview" style="display: none;">
+                        <img id="previewImg" src="" alt="Preview">
+                    </div>
+                </div>
+                <div class="media-card">
+                    <label for="video_url" class="form-label">
+                        <i class="bi bi-link-45deg"></i> Spotlight Video URL (Optional)
+                    </label>
+                    <input type="url" name="video_url" id="video_url" class="form-control" placeholder="https://youtu.be/..." pattern="https?://.*">
+                    <small class="form-text text-muted">Drop in a YouTube/Vimeo link or any direct MP4 URL.</small>
+                </div>
+            </div>
+    
+            <div class="editor-actions">
+                <button type="submit" class="btn btn-glow">
+                    <i class="bi bi-upload"></i> Publish Post
+                </button>
+                <a href="{{ url_for('index') }}" class="btn btn-ghost">
+                    <i class="bi bi-x-circle"></i> Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const imageInput = document.getElementById('image');
+    if (imageInput) {
+        imageInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('previewImg').src = event.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('imagePreview').style.display = 'none';
+            }
+        });
+    }
+</script>
+{% endblock %}
+
