@@ -87,7 +87,7 @@
     {% if posts %}
         {% for post in posts %}
         <div class="col-12 col-md-6 col-xl-4">
-            <article class="post-card-modern h-100">
+            <article class="post-card-modern h-100" onclick="window.location='{{ url_for('post', id=post.id) }}'" style="cursor: pointer;">
                 <div class="card-media">
                     {% if post.image_filename %}
                     <div class="media-thumb" style="background-image: url('{{ url_for('static', filename='uploads/' + post.image_filename) }}');"></div>
@@ -98,7 +98,7 @@
                     {% endif %}
                     <div class="card-badges">
                         {% if post.category %}
-                        <a href="{{ url_for('index', category=post.category) }}" class="category-pill">
+                        <a href="{{ url_for('index', category=post.category) }}" class="category-pill" onclick="event.stopPropagation();">
                             <i class="bi bi-tag"></i> {{ post.category }}
                         </a>
                         {% endif %}
@@ -119,7 +119,7 @@
                         </div>
                         {% endif %}
                         <div>
-                            <a href="{{ url_for('profile', user_id=post.author.id) }}" class="author-name">{{ post.author.username }}</a>
+                            <a href="{{ url_for('profile', user_id=post.author.id) }}" class="author-name" onclick="event.stopPropagation();">{{ post.author.username }}</a>
                             <p class="author-meta mb-0">
                                 <i class="bi bi-calendar"></i> {{ post.date_posted.strftime('%b %d, %Y') }}
                             </p>
@@ -133,7 +133,7 @@
                         <span><i class="bi bi-chat-dots"></i> {{ post.comments|length }} comments</span>
                         <span><i class="bi bi-clock-history"></i> {{ post.date_posted.strftime('%I:%M %p') }}</span>
                     </div>
-                    <a href="{{ url_for('post', id=post.id) }}" class="btn btn-soft">
+                    <a href="{{ url_for('post', id=post.id) }}" class="btn btn-soft" onclick="event.stopPropagation();">
                         Read Article <i class="bi bi-arrow-up-right"></i>
                     </a>
                 </div>
