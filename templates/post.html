@@ -38,24 +38,42 @@
             
             <!-- Post Media (Image or Video) -->
             <div class="mb-4 post-image-container">
-                {% if post.video_url %}
-                {% set video_url = post.video_url %}
-                {% set embed_url = video_url %}
+                {% if post.video_url and post.video_url.strip() %}
+                {% set video_url = post.video_url.strip() %}
+                {% set embed_url = None %}
+                {% set is_embed = False %}
+                
+                {# Handle YouTube URLs #}
                 {% if 'youtu.be/' in video_url %}
-                    {% set embed_code = video_url.split('/')[-1].split('?')[0] %}
+                    {% set embed_code = video_url.split('youtu.be/')[1].split('?')[0].split('&')[0] %}
                     {% set embed_url = 'https://www.youtube.com/embed/' + embed_code %}
+                    {% set is_embed = True %}
                 {% elif 'youtube.com/watch' in video_url and 'v=' in video_url %}
-                    {% set embed_code = video_url.split('v=')[1].split('&')[0] %}
+                    {% set embed_code = video_url.split('v=')[1].split('&')[0].split('#')[0] %}
                     {% set embed_url = 'https://www.youtube.com/embed/' + embed_code %}
+                    {% set is_embed = True %}
+                {% elif 'youtube.com/embed/' in video_url %}
+                    {% set embed_url = video_url %}
+                    {% set is_embed = True %}
+                {% elif 'youtube.com/v/' in video_url %}
+                    {% set embed_code = video_url.split('youtube.com/v/')[1].split('?')[0].split('&')[0] %}
+                    {% set embed_url = 'https://www.youtube.com/embed/' + embed_code %}
+                    {% set is_embed = True %}
+                {# Handle Vimeo URLs #}
                 {% elif 'vimeo.com/' in video_url and 'player.vimeo.com' not in video_url %}
-                    {% set embed_code = video_url.split('/')[-1].split('?')[0] %}
+                    {% set embed_code = video_url.split('vimeo.com/')[1].split('?')[0].split('#')[0] %}
                     {% set embed_url = 'https://player.vimeo.com/video/' + embed_code %}
+                    {% set is_embed = True %}
+                {% elif 'player.vimeo.com' in video_url %}
+                    {% set embed_url = video_url %}
+                    {% set is_embed = True %}
                 {% endif %}
-                {% if 'youtube.com/embed/' in embed_url or 'player.vimeo.com' in embed_url %}
+                
+                {% if is_embed and embed_url %}
                 <div class="ratio ratio-16x9 rounded-4 overflow-hidden shadow">
-                    <iframe src="{{ embed_url }}" title="Embedded video player" allowfullscreen loading="lazy"></iframe>
+                    <iframe src="{{ embed_url }}" title="Embedded video player" allowfullscreen loading="lazy" frameborder="0"></iframe>
                 </div>
-                {% else %}
+                {% elif video_url %}
                 <div class="post-video-wrapper">
                     <video class="post-featured-video" controls>
                         <source src="{{ video_url }}">
