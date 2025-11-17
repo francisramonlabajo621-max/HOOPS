@@ -274,6 +274,54 @@ body::before {
     border-bottom: 2px solid var(--primary-color);
 }
 
+[data-theme="light"] .navbar-brand,
+[data-theme="light"] .navbar-brand .logo-title,
+[data-theme="light"] .navbar-brand .logo-tagline {
+    color: #020617 !important;
+}
+
+[data-theme="light"] .nav-link {
+    color: #020617 !important;
+}
+
+[data-theme="light"] .nav-link:hover {
+    color: var(--primary-color) !important;
+    background: rgba(14, 165, 233, 0.1);
+}
+
+[data-theme="light"] .nav-link.active {
+    color: var(--primary-color) !important;
+    background: rgba(14, 165, 233, 0.15);
+    font-weight: 600;
+}
+
+[data-theme="light"] .nav-link i {
+    color: inherit;
+}
+
+[data-theme="light"] .navbar-toggler {
+    border-color: #020617;
+}
+
+[data-theme="light"] .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(2, 6, 23, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+[data-theme="light"] #darkModeToggle {
+    color: #020617 !important;
+    background: rgba(14, 165, 233, 0.1);
+    border-color: rgba(14, 165, 233, 0.3);
+}
+
+[data-theme="light"] #darkModeToggle:hover {
+    background: rgba(14, 165, 233, 0.2);
+    color: var(--primary-color) !important;
+}
+
+[data-theme="light"] #darkModeToggle i {
+    color: inherit;
+}
+
 .navbar::after {
     content: '';
     position: absolute;
@@ -338,12 +386,24 @@ body::before {
     filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.3));
 }
 
+[data-theme="light"] .logo-title {
+    background: linear-gradient(135deg, #0ea5e9 0%, #a855f7 50%, #ec4899 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
 .logo-tagline {
     font-size: 0.7rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     opacity: 0.9;
     font-weight: 500;
+}
+
+[data-theme="light"] .logo-tagline {
+    color: #475569 !important;
+    opacity: 1;
 }
 
 .navbar-logo:hover {
